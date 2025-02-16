@@ -1,35 +1,36 @@
 "use client"
 
-import { useState } from "react"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "@/lib/firebase"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Icons } from "@/components/ui/icons"
-import Link from "next/link"
-import Image from "next/image"
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icons } from "@/components/ui/icons";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
-    setError("")
+    event.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      router.push("/admin/dashboard")
-    } catch (error) {
-      setError("Failed to log in. Please check your credentials.")
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/admin/dashboard");
+    } catch (error: any) {
+      console.error("Login error:", error); // ✅ Logs full Firebase error
+      setError(error.message || "Failed to log in. Please check your credentials.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -104,6 +105,5 @@ export default function AdminLoginPage() {
         </p>
       </div>
     </div>
-  )
+  );
 }
-
